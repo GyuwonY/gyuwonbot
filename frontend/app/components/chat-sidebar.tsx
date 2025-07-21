@@ -53,6 +53,47 @@ export default function ChatSidebar() {
       setMessages((prev) => [...prev, botMessage])
       setIsLoading(false)
     }, 2000) // 2초 지연으로 로딩 상태 확인
+
+    /*
+    // 실제 봇 API 호출
+    const fetchBotResponse = async () => {
+      try {
+        const response = await fetch('YOUR_BOT_API_URL', { // <--- 여기에 실제 API URL을 입력하세요.
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: inputValue }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: data.reply, // API 응답 형식에 따라 'data.reply' 또는 다른 키를 사용해야 할 수 있습니다.
+          sender: "bot",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, botMessage]);
+      } catch (error) {
+        console.error('Error fetching bot response:', error);
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: "죄송합니다. 메시지를 처리하는 중 오류가 발생했습니다.",
+          sender: "bot",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBotResponse();
+    */
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -62,7 +103,7 @@ export default function ChatSidebar() {
   }
 
   return (
-    <div className="sticky top-0 h-screen w-96 flex-shrink-0 flex flex-col border-l bg-background">
+    <div className="sticky top-0 h-screen w-150 flex-shrink-0 flex flex-col border-l bg-background">
       <CardHeader className="border-b h-14 flex items-center">
         <CardTitle className="text-lg font-semibold pl-4">채팅</CardTitle>
       </CardHeader>

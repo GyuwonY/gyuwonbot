@@ -5,18 +5,19 @@ import ChatSidebar from "./components/chat-sidebar"
 import ContactForm from "./components/contact-form"
 import ProjectCard from "./components/project-card"
 import TechStack from "./components/tech-stack"
+import CareerSection from "./components/career-section"
 
 export default function Page() {
   return (
     <div className="flex min-h-screen bg-background">
       {/* 메인 컨텐츠 영역 */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full">
         {/* 헤더 */}
         <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container flex h-14 items-center px-4 md:px-8">
+          <div className="container flex h-14 items-center px-4 md:px-8 max-w-7xl mx-auto">
             <div className="mr-4 hidden md:flex">
               <Link className="mr-6 flex items-center space-x-2" href="/">
-                <span className="hidden font-bold sm:inline-block">gwyoo's portfolio</span>
+                <span className="hidden font-bold sm:inline-block">GyuwonY's portfolio</span>
               </Link>
               <nav className="flex items-center space-x-6 text-sm font-medium">
                 <Link href="#about" className="transition-colors hover:text-foreground/80">
@@ -37,9 +38,9 @@ export default function Page() {
         </header>
 
         {/* 메인 */}
-        <main className="flex-1 container px-4 md:px-8">
+        <main className="flex-1 container px-4 md:px-8 max-w-7xl mx-auto">
           <section id="about" className="py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
+            <div className="container px-4 md:px-6 max-w-6xl mx-auto">
               <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
@@ -71,8 +72,17 @@ export default function Page() {
             </div>
           </section>
 
+          <section className="py-12 md:py-24 lg:py-32">
+            <div className="container px-4 md:px-6 max-w-6xl mx-auto">
+              <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl mb-12 text-center">
+                Tech Stack
+              </h2>
+              <TechStack />
+            </div>
+          </section>
+
           <section id="projects" className="py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
+            <div className="container px-4 md:px-6 max-w-6xl mx-auto">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-12 text-center">
                 Projects
               </h2>
@@ -102,17 +112,12 @@ export default function Page() {
             </div>
           </section>
 
-          <section className="py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-12 text-center">
-                Tech Stack
-              </h2>
-              <TechStack />
-            </div>
+          <section id="career">
+            <CareerSection />
           </section>
 
           <section id="contact" className="py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
+            <div className="container px-4 md:px-6 max-w-6xl mx-auto">
               <div className="mx-auto max-w-2xl">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-12 text-center">
                   Get in Touch
@@ -122,21 +127,6 @@ export default function Page() {
             </div>
           </section>
         </main>
-
-        {/* 푸터 */}
-        <footer className="border-t">
-          <div className="container flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-8">
-            <p className="text-xs text-gray-500 dark:text-gray-400">© 2025 gwyoo. All rights reserved.</p>
-            <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-              <Link className="text-xs hover:underline underline-offset-4" href="#">
-                Terms of Service
-              </Link>
-              <Link className="text-xs hover:underline underline-offset-4" href="#">
-                Privacy
-              </Link>
-            </nav>
-          </div>
-        </footer>
       </div>
 
       {/* 채팅 사이드바 */}
