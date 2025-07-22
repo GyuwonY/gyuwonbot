@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 from pydantic import ValidationError
 
+
 class Settings(BaseSettings):
     DATABASE_URL: str
     DISCORD_WEBHOOK_URL: str
@@ -18,7 +19,8 @@ try:
     settings = Settings()
 except ValidationError as e:
     for error in e.errors():
-        field_name = error['loc'][0].upper() if error['loc'] else "UNKNOWN_FIELD"
+        field_name = error["loc"][0].upper() if error["loc"] else "UNKNOWN_FIELD"
         print(f"- {field_name}: {error['msg']}")
     import sys
+
     sys.exit(1)
