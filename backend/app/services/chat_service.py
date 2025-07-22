@@ -1,17 +1,17 @@
-from langchain.agents import AgentExecutor, create_tool_calling_agent, Tool
+from langchain.agents import AgentExecutor, Tool, create_tool_calling_agent
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_redis import RedisChatMessageHistory
-from langchain_core.runnables.history import RunnableWithMessageHistory
 
 from app.core.config import settings
 from app.domain.chat import ChatRequest, ChatResponse
-from app.tools.notification_tool import discord_notification
 from app.tools.google_calendar_tool import (
+    create_event,
     get_calendar_service,
     list_upcoming_events,
-    create_event,
 )
+from app.tools.notification_tool import discord_notification
 
 
 class ChatService:
@@ -19,7 +19,7 @@ class ChatService:
         """ChatService 초기화"""
         self.llm = ChatGoogleGenerativeAI(
             model="gemini-2.5-pro",
-            api_key=settings.gemini_api_key,
+            api_key=settings.GEMINI_API_KEY,
             temperature=0.7,
         )
         self.tools = self._initialize_tools()
@@ -38,14 +38,19 @@ class ChatService:
                 [
                     Tool(
                         name="list_calendar_events",
-                        func=lambda max_results=10: list_upcoming_events(
+                        func=lambda max_results=20: list_upcoming_events(
                             calendar_service, max_results
                         ),
                         description="Google Calendar에서 예정된 이벤트를 확인합니다. 최대 결과 수를 지정할 수 있습니다.",
                     ),
                     Tool(
                         name="create_calendar_event",
-                        func=lambda summary, description, start_time, end_time, attendees=None, location=None: create_event(
+                        func=lambda summary,
+                        description,
+                        start_time,
+                        end_time,
+                        attendees=None,
+                        location=None: create_event(
                             calendar_service,
                             summary,
                             description,
@@ -60,7 +65,7 @@ class ChatService:
             )
         else:
             print(
-                "Google Calendar 서비스 초기화 실패. 캘린더 관련 도구는 비활성화됩니다."
+                "Google Calendar 서비스 오류"
             )
         return tools
 
@@ -93,7 +98,7 @@ class ChatService:
         return RunnableWithMessageHistory(
             self.agent_executor,
             lambda session_id: RedisChatMessageHistory(
-                session_id, url=settings.redis_url
+                session_id, url=settings.REDIS_URL
             ),
             input_messages_key="input",
             history_messages_key="chat_history",

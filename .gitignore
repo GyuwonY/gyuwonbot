@@ -209,5 +209,31 @@ __marimo__/
 *.md
 !README.md
 !prompt.md
-token.js
-credentials.json
+
+!/frontend/lib
+
+# front ignore
+frontend/node_modules
+
+# next.js
+frontend/.next/
+frontend/out/
+
+# production
+frontend/build
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

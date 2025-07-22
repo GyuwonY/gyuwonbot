@@ -4,7 +4,7 @@ from app.core.config import settings
 
 class NotificationService:
     def __init__(self):
-        self.webhook_url = settings.discord_webhook_url
+        self.webhook_url = settings.DISCORD_WEBHOOK_URL
 
     async def send_message(self, message: str):
         """
