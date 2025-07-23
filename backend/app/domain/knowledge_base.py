@@ -22,6 +22,7 @@ class KnowledgeBase(Base):
         Integer,
         primary_key=True,
         index=True,
+        autoincrement=True
     )
 
     source_type: Mapped[SourceTypeEnum] = mapped_column(

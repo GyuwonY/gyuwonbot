@@ -8,6 +8,7 @@ from langchain_core.tools import tool
     "search_knowledge_base",
     description="""
         이력서, 기술 스택, 프로젝트 경험, TMI 등 구체적인 정보에 대한 질문에 사용됩니다.
+        가장 연관있는 정보 3개의 리스트
 
         Args:
             query (str): 사용자의 검색 질문.
@@ -19,12 +20,9 @@ from langchain_core.tools import tool
 )
 async def search_knowledge_base(
     query: str, kb_service: KnowledgeBaseService
-) -> List[str]:
+) -> List[KnowledgeBase]:
     similar_documents: List[KnowledgeBase] = await kb_service.search_similar_documents(
         query=query
     )
 
-    if not similar_documents:
-        return ["관련 정보를 찾을 수 없습니다."]
-
-    return [doc.content for doc in similar_documents]
+    return similar_documents

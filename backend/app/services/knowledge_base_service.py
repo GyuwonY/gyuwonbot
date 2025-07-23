@@ -103,11 +103,11 @@ class KnowledgeBaseService:
                 raise UnsupportedFileTypeError(filename=file.filename)
 
         if all_new_kb_items:
-            self.db_session.add_all(all_new_kb_items)
+            await self.db_session.add_all(all_new_kb_items)
             await self.db_session.commit()
 
     async def search_similar_documents(
-        self, query: str, top_k: int = 10
+        self, query: str, top_k: int = 3
     ) -> List[KnowledgeBase]:
         query_embedding = await self._get_embeddings(query)
         stmt = (
