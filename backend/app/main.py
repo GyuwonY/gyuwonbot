@@ -1,12 +1,23 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from app.api.v1 import chat
 from app.core.exceptions import FileUploadError
 from app.api.v1 import knowledge_base
 from fastapi.middleware.cors import CORSMiddleware
+from app.infrastructure.database import create_tables, engine 
 import uvicorn
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_tables()
+    yield
+    if engine:
+        await engine.dispose()
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 origins = [

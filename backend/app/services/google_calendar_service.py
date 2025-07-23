@@ -11,9 +11,6 @@ class GoogleCalendarService:
     SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
     def __init__(self):
-        """
-        서비스 계정 인증 정보를 사용하여 Google Calendar 서비스 객체를 초기화합니다.
-        """
         try:
             service_account_info = json.loads(settings.GOOGLE_SERVICE_ACCOUNT_JSON)
             self.creds = Credentials.from_service_account_info(

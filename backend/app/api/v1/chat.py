@@ -34,38 +34,11 @@ def get_notification_service() -> NotificationService:
     return NotificationService()
 
 
-def get_knowledge_base_service(
-    db: AsyncSession = Depends(get_db),
-) -> KnowledgeBaseService:
-    return KnowledgeBaseService(db_session=db)
-
-
-def get_agent_service(
-    llm: ChatGoogleGenerativeAI = Depends(get_llm),
-    kb_service: KnowledgeBaseService = Depends(get_knowledge_base_service),
-    gc_service: GoogleCalendarService = Depends(get_google_calendar_service),
-    notification_service: NotificationService = Depends(get_notification_service),
-) -> AgentService:
-    return AgentService(
-        llm=llm,
-        knowledge_base_service=kb_service,
-        google_calendar_service=gc_service,
-        notification_service=notification_service,
-    )
-
-
-def get_chat_service(
-    agent_service: AgentService = Depends(get_agent_service),
-) -> ChatService:
-    agent_with_history = agent_service.create_agent()
-    return ChatService(agent_with_history=agent_with_history)
-
-
 @router.post("/", response_model=ChatResponse)
 async def chat_with_bot(
     fastapi_request: Request,
     chat_request: ChatRequest,
-    chat_service: ChatService = Depends(get_chat_service),
+    db: AsyncSession = Depends(get_db),
 ):
     x_forwarded_for = fastapi_request.headers.get("X-Forwarded-For")
     session_id = (
@@ -73,4 +46,19 @@ async def chat_with_bot(
         if x_forwarded_for
         else fastapi_request.client.host
     )
+
+    llm = get_llm()
+    kb_service = KnowledgeBaseService(db_session=db)
+    gc_service = get_google_calendar_service()
+    notification_service = get_notification_service()
+
+    agent_service = AgentService(
+        llm=llm,
+        knowledge_base_service=kb_service,
+        google_calendar_service=gc_service,
+        notification_service=notification_service,
+    )
+
+    chat_service = ChatService(agent_with_history=agent_service.create_agent())
+
     return await chat_service.chat(session_id, chat_request)

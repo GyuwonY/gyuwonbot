@@ -29,9 +29,15 @@ class KnowledgeBase(Base):
         PGEnum(
             SourceTypeEnum,
             values_callable=lambda x: [e.value for e in x],
-            name="source_type_enum",
+            name="source_type",
+            create_type=True
         ),
         nullable=False,
+    )
+    
+    q_id: Mapped[Optional[str]] = mapped_column(
+        String(20),
+        nullable=True,
     )
 
     persona: Mapped[Optional[str]] = mapped_column(
@@ -51,7 +57,7 @@ class KnowledgeBase(Base):
         nullable=False,
     )
 
-    embedding: Mapped[List[float]] = mapped_column(Vector(768), nullable=False)
+    embedding: Mapped[List[float]] = mapped_column(Vector(1536), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=func.now(), nullable=False

@@ -20,13 +20,25 @@ from app.core.exceptions import (
 class KnowledgeBaseService:
     def __init__(self, db_session: AsyncSession):
         self.db_session = db_session
-        self.embeddings_model = GoogleGenerativeAIEmbeddings(
-            model="text-multilingual-embedding-002",
-            google_api_key=settings.GEMINI_API_KEY,
-        )
+        self.embeddings_model: GoogleGenerativeAIEmbeddings | None = None
+
+
+    async def _get_or_create_embeddings_model(self) -> GoogleGenerativeAIEmbeddings:
+        if self.embeddings_model is None:
+            self.embeddings_model = GoogleGenerativeAIEmbeddings(
+                model="gemini-embedding-001",
+                google_api_key=settings.GEMINI_API_KEY,
+            )
+        return self.embeddings_model
+
 
     async def _get_embeddings(self, text: str) -> List[float]:
-        return await self.embeddings_model.aembed_query(text)
+        model = await self._get_or_create_embeddings_model()
+        return await model.aembed_query(
+            text = text,
+            output_dimensionality = 1536,
+        )
+
 
     async def _process_csv(
         self, file: UploadFile, filename: str
@@ -39,7 +51,8 @@ class KnowledgeBaseService:
                 f"질문: {row['Question']}\n답변: {row['Answer']}"
                 for _, row in df.iterrows()
             ]
-            embeddings = await self.embeddings_model.aembed_documents(texts_to_embed)
+            model = await self._get_or_create_embeddings_model()
+            embeddings = await model.aembed_documents(texts_to_embed, output_dimensionality = 1536)
 
             knowledge_bases = []
             for (_, row), embedding in zip(df.iterrows(), embeddings):
@@ -57,6 +70,7 @@ class KnowledgeBaseService:
         except Exception as e:
             raise CSVProcessingError(filename=filename, original_exception=e)
 
+
     async def _process_md(self, file: UploadFile, filename: str) -> List[KnowledgeBase]:
         try:
             content = await file.read()
@@ -69,7 +83,8 @@ class KnowledgeBaseService:
             split_documents = markdown_splitter.split_text(text_content)
 
             texts_to_embed = [doc.page_content for doc in split_documents]
-            embeddings = await self.embeddings_model.aembed_documents(texts_to_embed)
+            model = await self._get_or_create_embeddings_model()
+            embeddings = await model.aembed_documents(texts_to_embed, output_dimensionality = 1536)
 
             knowledge_bases = []
             for doc, embedding in zip(split_documents, embeddings):
@@ -87,6 +102,7 @@ class KnowledgeBaseService:
         except Exception as e:
             raise MDProcessingError(filename=filename, original_exception=e)
 
+
     async def add_files_to_knowledge_base(self, files: List[UploadFile]):
         all_new_kb_items = []
         for file in files:
@@ -103,8 +119,9 @@ class KnowledgeBaseService:
                 raise UnsupportedFileTypeError(filename=file.filename)
 
         if all_new_kb_items:
-            await self.db_session.add_all(all_new_kb_items)
+            self.db_session.add_all(all_new_kb_items)
             await self.db_session.commit()
+
 
     async def search_similar_documents(
         self, query: str, top_k: int = 3
