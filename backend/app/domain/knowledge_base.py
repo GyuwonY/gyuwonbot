@@ -4,8 +4,9 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.ext.declarative import declarative_base
 from pgvector.sqlalchemy import Vector
 from sqlalchemy.dialects.postgresql import ENUM as PGEnum
-from typing import Optional, List
+from typing import Dict, Optional, List
 from datetime import datetime
+
 
 Base = declarative_base()
 
@@ -19,10 +20,7 @@ class KnowledgeBase(Base):
     __tablename__ = "knowledge_base"
 
     id: Mapped[int] = mapped_column(
-        Integer,
-        primary_key=True,
-        index=True,
-        autoincrement=True
+        Integer, primary_key=True, index=True, autoincrement=True
     )
 
     source_type: Mapped[SourceTypeEnum] = mapped_column(
@@ -30,11 +28,11 @@ class KnowledgeBase(Base):
             SourceTypeEnum,
             values_callable=lambda x: [e.value for e in x],
             name="source_type",
-            create_type=True
+            create_type=True,
         ),
         nullable=False,
     )
-    
+
     q_id: Mapped[Optional[str]] = mapped_column(
         String(20),
         nullable=True,
@@ -57,8 +55,16 @@ class KnowledgeBase(Base):
         nullable=False,
     )
 
-    embedding: Mapped[List[float]] = mapped_column(Vector(1536), nullable=False)
+    embedding: Mapped[List[float]] = mapped_column(Vector(768), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=func.now(), nullable=False
     )
+
+    def to_dict(self) -> Dict[str, Optional[str]]:
+        return {
+            "source_type": self.source_type.value,
+            "topic": self.topic,
+            "question": self.question,
+            "content": self.content,
+        }

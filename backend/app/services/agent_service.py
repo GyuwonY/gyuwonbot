@@ -10,6 +10,8 @@ from app.services.notification_service import NotificationService
 from app.tools.google_calendar_tool import get_google_calendar_tools
 from app.tools.notification_tool import get_notification_tool
 from app.tools.knowledge_base_tool import get_knowledge_base_tool
+from app.tools.date_tool import get_date_tool
+
 
 
 class AgentService:
@@ -32,6 +34,7 @@ class AgentService:
             get_knowledge_base_tool(self.knowledge_base_service),
             *get_google_calendar_tools(self.google_calendar_service),
             get_notification_tool(self.notification_service),
+            get_date_tool(),
         ]
 
     @staticmethod
@@ -52,7 +55,7 @@ class AgentService:
 
     def create_agent(self) -> RunnableWithMessageHistory:
         agent = create_tool_calling_agent(self.llm, self.tools, self.prompt)
-        agent_executor = AgentExecutor(agent=agent, tools=self.tools, verbose=True)
+        agent_executor = AgentExecutor(agent=agent, tools=self.tools)
 
         return RunnableWithMessageHistory(
             agent_executor,

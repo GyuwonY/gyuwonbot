@@ -2,10 +2,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from app.api.v1 import chat
-from app.core.exceptions import FileUploadError
 from app.api.v1 import knowledge_base
+from app.core.exceptions import FileUploadError
 from fastapi.middleware.cors import CORSMiddleware
-from app.infrastructure.database import create_tables, engine 
+from app.infrastructure.database import create_tables, engine
 import uvicorn
 
 
@@ -52,6 +52,7 @@ app.include_router(chat.router, prefix="/chat", tags=["chat"])
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)

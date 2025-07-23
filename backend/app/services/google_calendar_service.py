@@ -12,7 +12,8 @@ class GoogleCalendarService:
 
     def __init__(self):
         try:
-            service_account_info = json.loads(settings.GOOGLE_SERVICE_ACCOUNT_JSON)
+            with open(settings.GOOGLE_SERVICE_ACCOUNT_JSON, "r") as f:
+                service_account_info = json.load(f)
             self.creds = Credentials.from_service_account_info(
                 service_account_info, scopes=self.SCOPES
             )
@@ -25,6 +26,7 @@ class GoogleCalendarService:
     async def list_events(
         self, start_date: str, max_results: int = 50
     ) -> List[Dict[str, Any]]:
+        fields_to_include = "items(summary,start)"
         try:
             events_result = await asyncio.to_thread(
                 self.service.events()
@@ -34,6 +36,7 @@ class GoogleCalendarService:
                     maxResults=max_results,
                     singleEvents=True,
                     orderBy="startTime",
+                    fields=fields_to_include,
                 )
                 .execute
             )
@@ -42,15 +45,20 @@ class GoogleCalendarService:
             raise RuntimeError(f"캘린더 이벤트 조회 중 오류 발생: {error}")
 
     async def insert_event(self, event_body: Dict[str, Any]) -> Dict[str, Any]:
+        fields_to_include = "summary,start"
         try:
             event = await asyncio.to_thread(
                 self.service.events()
-                .insert(calendarId=settings.CALENDAL_ID, body=event_body)
+                .insert(
+                    calendarId=settings.CALENDAL_ID,
+                    body=event_body,
+                    fields=fields_to_include,
+                )
                 .execute
             )
             return event
         except HttpError as error:
-            raise RuntimeError(f"캘린더 이벤트 등록 중 오류 발생: {error}")
+            return {"message": f"캘린더 이벤트 등록 중 오류 발생: {error}"}
 
 
 def get_calendar_service() -> GoogleCalendarService:

@@ -210,6 +210,8 @@ __marimo__/
 !README.md
 !prompt.md
 
+backend/*.json
+
 !/frontend/lib
 
 # front ignore
