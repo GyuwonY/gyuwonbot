@@ -18,9 +18,9 @@ router = APIRouter()
 @lru_cache
 def get_llm() -> ChatGoogleGenerativeAI:
     return ChatGoogleGenerativeAI(
-        model="gemini-2.5-pro",
+        model="gemini-2.5-flash",
         api_key=settings.GEMINI_API_KEY,
-        temperature=0.7,
+        temperature=0.4,
     )
 
 

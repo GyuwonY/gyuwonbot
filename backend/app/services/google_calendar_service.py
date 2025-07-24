@@ -42,7 +42,7 @@ class GoogleCalendarService:
             )
             return events_result.get("items", [])
         except HttpError as error:
-            raise RuntimeError(f"캘린더 이벤트 조회 중 오류 발생: {error}")
+            return [{"message": f"캘린더 이벤트 조회 중 오류 발생: {error}"}]
 
     async def insert_event(self, event_body: Dict[str, Any]) -> Dict[str, Any]:
         fields_to_include = "summary,start"

@@ -12,4 +12,5 @@ class ChatService:
             {"input": request.message},
             config={"configurable": {"session_id": session_id}},
         )
+
         return ChatResponse(content=response["output"])

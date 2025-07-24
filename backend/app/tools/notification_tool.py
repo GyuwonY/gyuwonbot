@@ -23,9 +23,7 @@ class NotificationTool:
             message (str): Discord로 보낼 알림 메시지 내용. 상황에 맞는 구체적이고 요약된 정보를 포함해야 합니다.
 
         Returns:
-            str: 알림 전송의 성공 또는 실패를 나타내는 메시지.
-                성공 시: 전송 성공
-                실패 시: 실패 사유
+            str: 알림 전송의 성공 또는 실패를 나타내는 메시지. 성공 시: 전송 성공 실패 시: 실패 사유
         """
         return await self.notification_service.send_message(message)
 

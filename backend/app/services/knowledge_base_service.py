@@ -45,7 +45,7 @@ class KnowledgeBaseService:
             df = await asyncio.to_thread(pd.read_csv, io.BytesIO(content))
 
             texts_to_embed = [
-                f"질문: {row['Question']}\n답변: {row['Answer']}"
+                f"주제: {row['Topic']}\n검색 키워드: {row['Search_Keywords']}\n질문 키워드: {row['Question_Keywords']}"
                 for _, row in df.iterrows()
             ]
             model = await self._get_or_create_embeddings_model()
@@ -62,6 +62,8 @@ class KnowledgeBaseService:
                         topic=row["Topic"],
                         question=row["Question"],
                         content=row["Answer"],
+                        search_keyword=row["Search_Keywords"],
+                        question_keyword=row["Question_Keywords"],
                         embedding=embedding,
                     )
                 )
@@ -74,13 +76,15 @@ class KnowledgeBaseService:
             content = await file.read()
             text_content = await asyncio.to_thread(content.decode, "utf-8")
 
-            headers_to_split_on = [("##", "Section"), ("###", "Sub-Section")]
+            headers_to_split_on = [("##", "Section")]
             markdown_splitter = MarkdownHeaderTextSplitter(
                 headers_to_split_on=headers_to_split_on
             )
             split_documents = markdown_splitter.split_text(text_content)
 
-            texts_to_embed = [doc.page_content for doc in split_documents]
+            texts_to_embed = [
+                doc.page_content.split("\n---\n")[-1] for doc in split_documents
+            ]
             model = await self._get_or_create_embeddings_model()
             embeddings = await model.aembed_documents(
                 texts_to_embed, output_dimensionality=768
@@ -88,12 +92,18 @@ class KnowledgeBaseService:
 
             knowledge_bases = []
             for doc, embedding in zip(split_documents, embeddings):
+                split_docs = doc.page_content.split("\n---\n")
+                topic = (
+                    doc.metadata.get("Section") + f": {split_docs[1]}"
+                    if len(split_docs) == 3
+                    else ""
+                )
+
                 knowledge_bases.append(
                     KnowledgeBase(
                         source_type=SourceTypeEnum.RESUME,
-                        topic=doc.metadata.get(
-                            "Sub-Section", doc.metadata.get("Section", "일반")
-                        ),
+                        topic=topic,
+                        search_keyword=split_docs[0],
                         content=doc.page_content,
                         embedding=embedding,
                     )

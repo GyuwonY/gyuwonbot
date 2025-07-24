@@ -13,7 +13,6 @@ from app.tools.knowledge_base_tool import get_knowledge_base_tool
 from app.tools.date_tool import get_date_tool
 
 
-
 class AgentService:
     def __init__(
         self,
@@ -55,7 +54,7 @@ class AgentService:
 
     def create_agent(self) -> RunnableWithMessageHistory:
         agent = create_tool_calling_agent(self.llm, self.tools, self.prompt)
-        agent_executor = AgentExecutor(agent=agent, tools=self.tools)
+        agent_executor = AgentExecutor(agent=agent, tools=self.tools, verbose=True)
 
         return RunnableWithMessageHistory(
             agent_executor,

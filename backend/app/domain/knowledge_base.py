@@ -50,6 +50,10 @@ class KnowledgeBase(Base):
         nullable=True,
     )
 
+    search_keyword: Mapped[str] = mapped_column(String, nullable=False)
+
+    question_keyword: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+
     content: Mapped[str] = mapped_column(
         Text,
         nullable=False,

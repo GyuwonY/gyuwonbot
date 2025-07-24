@@ -1,6 +1,8 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from app.services.google_calendar_service import GoogleCalendarService
 from langchain_core.tools import StructuredTool
+
+from app.tools.models.calendar_tool_model import CreateEventToolInput
 
 
 class GoogleCalendarTool:
@@ -25,22 +27,14 @@ class GoogleCalendarTool:
         """
         return await self.gcal_service.list_events(start_date, max_results)
 
-    async def insert_event(self, event_body: Dict[str, Any]) -> Dict[str, Any]:
+    async def insert_event(
+        self,
+        summary: str,
+        start_date: str,
+        end_date: str,
+        description: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """
-        Google Calendar에 새 일정을 생성
-        일정 생성 전 일정 조회 후 요청된 날짜에 이미 일정이 있는 경우, 일정이 있음을 안내하고 다른 비어있는 날짜를 추천해야만 한다
-
-        Args:
-            event_body (dict): 생성할 일정의 상세 정보를 담은 딕셔너리
-                        - summary (str): 일정의 제목 (예: "면접" 또는 "커피챗"). (필수)
-                        - description (str): 사용자가 남긴 연락처, 주소 등 기타 상세 정보
-                        - start (dict): 일정 시작 시간 딕셔너리. 다음 키를 포함:
-                                - date (str): 일정 요청한 시작 날짜 'yyyy-mm-dd'
-                                - timeZone (str): "Asia/Seoul" 로 고정된 값만 사용
-                            - end (dict): 일정 종료 시간 딕셔너리. 다음 키를 포함:
-                                - date (str): 일정 종료 날짜 'yyyy-mm-dd' 일정 시작 날짜의 다음 날짜
-                                - timeZone (str): "Asia/Seoul" 로 고정된 값만 사용
-
         Returns:
             dict: 생성된 일정의 요약 정보 또는 일정 생성 실패 시 메시지
                   **성공 시:**
@@ -50,7 +44,13 @@ class GoogleCalendarTool:
                   **실패 시:**
                     - message (str): 실패 원인에 대한 설명.
         """
-        return await self.gcal_service.insert_event(event_body)
+        tool_input = CreateEventToolInput(
+            summary=summary,
+            start_date=start_date,
+            end_date=end_date,
+            description=description,
+        )
+        return await self.gcal_service.insert_event(tool_input.to_dict())
 
 
 def get_google_calendar_tools(
@@ -65,7 +65,7 @@ def get_google_calendar_tools(
         ),
         StructuredTool.from_function(
             coroutine=gcal_tool.insert_event,
-            infer_schema=True,
+            args_schema=CreateEventToolInput,
             parse_docstring=True,
         ),
     ]
