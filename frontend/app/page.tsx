@@ -50,8 +50,7 @@ export default function Page() {
                     유규원
                   </h1>
                   <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                    Building digital experiences with modern technologies. Focused on creating elegant solutions to
-                    complex problems.
+                    기술의 경계를 넘나들며 비즈니스 문제를 해결하고 성장을 멈추지 않습니다.
                   </p>
                 </div>
                 <div className="space-x-4">
@@ -88,25 +87,32 @@ export default function Page() {
               </h2>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <ProjectCard
-                  title="E-commerce Platform"
-                  description="A full-stack e-commerce platform built with Next.js, Prisma, and Stripe integration."
-                  image="/placeholder.svg?height=400&width=600"
-                  link="https://github.com"
-                  tags={["Next.js", "Prisma", "Stripe"]}
+                  title="Gyuwon-Bot"
+                  description="LLM 에이전트 기반 인터랙티브 포트폴리오"
+                  image="/GyuwonBot.png?height=400&width=600"
+                  link="https://github.com/GyuwonY/gyuwonbot"
+                  tags={["FastAPI", "Next.js", "Langchain", "LLM", "PostgreSQL Vector", "GCP"]}
                 />
                 <ProjectCard
-                  title="Task Management App"
-                  description="A real-time task management application with team collaboration features."
-                  image="/placeholder.svg?height=400&width=600"
-                  link="https://github.com"
-                  tags={["React", "Node.js", "Socket.io"]}
+                  title="선착순 구매 동시성 관리 서비스"
+                  description="MSA에 따른 선착순 구매 상황 동시성 관리 서비스"
+                  image="/MSA-PJ.png?height=400&width=600"
+                  link="https://github.com/GyuwonY/reboot-project"
+                  tags={["SpringBoot", "SpringCloud", "MySQL", "Redis", "Docker"]}
                 />
                 <ProjectCard
-                  title="AI Chat Interface"
-                  description="An AI-powered chat interface with natural language processing capabilities."
+                  title="WYA"
+                  description="위치 기반 약속 관리 서비스"
                   image="/placeholder.svg?height=400&width=600"
-                  link="https://github.com"
-                  tags={["OpenAI", "Next.js", "TailwindCSS"]}
+                  link="https://github.com/CreativeApes/WYA_SERVER"
+                  tags={["NestJS", "MySQL", "Firebase", "AWS"]}
+                />
+                <ProjectCard
+                  title="corinne"
+                  description="Gamification 코인 모의투자 서비스"
+                  image="/corinne.png?height=400&width=600"
+                  link="https://github.com/GyuwonY/corinne_BE"
+                  tags={["SpringBoot", "Websocket", "MySQL", "Redis", "AWS"]}
                 />
               </div>
             </div>

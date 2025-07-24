@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from app.api.v1 import chat
-from app.api.v1 import knowledge_base
+from app.api.v1 import knowledge_base, notification
 from app.core.exceptions import FileUploadError
 from fastapi.middleware.cors import CORSMiddleware
 from app.infrastructure.database import create_tables, engine
@@ -47,6 +47,10 @@ app.include_router(
     knowledge_base.router, prefix="/knowledgebase", tags=["knowledgebase"]
 )
 app.include_router(chat.router, prefix="/chat", tags=["chat"])
+app.include_router(
+    notification.router, prefix="/notification", tags=["notification"]
+)
+
 
 
 @app.get("/")

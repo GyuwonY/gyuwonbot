@@ -6,30 +6,44 @@ const careerData = [
   {
     id: 1,
     company: "(주) 팹",
-    period: "2024.11 - (재직 중)",
-    description: "명품 C2C 거래 플랫폼 CHIC",
+    period: "2023.05 - 2023.11",
+    description: "명품 C2C 거래 플랫폼 CHIC 개발",
     logo: "/logo-pap.jpg?height=80&width=80",
     tags: ["Backend 개발"],
     projects: [
       {
-        title: "명품 C2C 거래 플랫폼 개발",
-        period: "",
-        description: "",
+        title: "데이터 Migration 자동화",
+        description: "Spring Batch, Reflection 사용 자동화 구축",
+      },
+      {
+        title: "NestJS -> Spring Boot Migration",
+        description: "환경 개선을 위한 Migration",
+      },
+      {
+        title: "서비스 기능 개발",
+        description: "비지니스에 필요한 기능 개발",
       },
     ],
   },
   {
     id: 2,
     company: "(주) 아우토크립트",
-    period: "",
-    description: "",
+    period: "2022.08 - 2023.04",
+    description: "모빌리티 관련 서비스 개발",
     logo: "/logo-autocrypt.png?height=80&width=80",
     tags: ["Backend 개발"],
     projects: [
       {
-        title: "",
-        period: "",
-        description: "",
+        title: "타보소",
+        description: "경북 수요응답형 버스 서비스",
+      },
+      {
+        title: "택시회사 ERP",
+        description: "ERP 초기 설계 및 기능 개발",
+      },
+      {
+        title: "보트랑",
+        description: "전기보트 투어서비스",
       },
     ],
   },
@@ -81,8 +95,7 @@ export default function CareerSection() {
                 {career.projects.map((project, index) => (
                   <div key={index} className="border-l-2 border-muted pl-6 pb-6">
                     <div className="space-y-2">
-                      <h4 className="font-medium text-lg">{project.title}</h4>
-                      <p className="text-sm text-muted-foreground">{project.period}</p>
+                      <h4 className="font-medium text-m">{project.title}</h4>
                       {project.description && (
                         <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
                       )}

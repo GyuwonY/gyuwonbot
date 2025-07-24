@@ -5,27 +5,42 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
-import { submitContactForm } from "../actions"
 
 export default function ContactForm() {
   const [pending, setPending] = useState(false)
   const [message, setMessage] = useState("")
 
-  async function handleSubmit(formData: FormData) {
-    setPending(true)
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPending(true);
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    const a = process.env.NEXT_PUBLIC_GYUWONBOT_API_URL
+    console.log(a)
     try {
-      const response = await submitContactForm(formData)
-      setMessage(response.message)
+      const response = await fetch(process.env.NEXT_PUBLIC_GYUWONBOT_API_URL+'/notification' || '', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('서버 오류');
+      }
+      
+      setMessage("남겨주신 연락처로 연락 드리겠습니다. 감사합니다.");
     } catch (error) {
-      setMessage("Something went wrong. Please try again.")
+      setMessage("다시 시도해주시기 바랍니다.");
     } finally {
-      setPending(false)
+      setPending(false);
     }
   }
 
   return (
     <Card className="p-6">
-      <form action={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium mb-2">
             Name
