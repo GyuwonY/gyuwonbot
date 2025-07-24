@@ -6,7 +6,6 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     DISCORD_WEBHOOK_URL: str
     GEMINI_API_KEY: str
-    REDIS_URL: str
     GOOGLE_SERVICE_ACCOUNT_JSON: str
     CALENDAL_ID: str
 
