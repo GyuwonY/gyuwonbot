@@ -76,14 +76,16 @@ class KnowledgeBaseService:
             content = await file.read()
             text_content = await asyncio.to_thread(content.decode, "utf-8")
 
-            headers_to_split_on = [("##", "Section")]
+            headers_to_split_on = [("##", "Section"), ("###", "Sub-Section")]
             markdown_splitter = MarkdownHeaderTextSplitter(
                 headers_to_split_on=headers_to_split_on
             )
             split_documents = markdown_splitter.split_text(text_content)
-
             texts_to_embed = [
-                doc.page_content.split("\n---\n")[-1] for doc in split_documents
+                doc.metadata.get("Section")
+                + ", "
+                + doc.page_content.split("\n---\n")[0]
+                for doc in split_documents
             ]
             model = await self._get_or_create_embeddings_model()
             embeddings = await model.aembed_documents(
@@ -93,18 +95,16 @@ class KnowledgeBaseService:
             knowledge_bases = []
             for doc, embedding in zip(split_documents, embeddings):
                 split_docs = doc.page_content.split("\n---\n")
-                topic = (
-                    doc.metadata.get("Section") + f": {split_docs[1]}"
-                    if len(split_docs) == 3
-                    else ""
-                )
+                topic = doc.metadata.get("Section")
+                if doc.metadata.get("Sub-Section"):
+                    topic += f": {doc.metadata.get("Sub-Section")}"
 
                 knowledge_bases.append(
                     KnowledgeBase(
                         source_type=SourceTypeEnum.RESUME,
                         topic=topic,
                         search_keyword=split_docs[0],
-                        content=doc.page_content,
+                        content=split_docs[1],
                         embedding=embedding,
                     )
                 )
