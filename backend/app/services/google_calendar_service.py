@@ -13,8 +13,7 @@ class GoogleCalendarService:
     def __init__(self):
         self.calendar_id = settings.CALENDAR_ID
         try:
-            with open(settings.GOOGLE_SERVICE_ACCOUNT_JSON, "r") as f:
-                service_account_info = json.load(f)
+            service_account_info = json.loads(settings.GOOGLE_SERVICE_ACCOUNT_JSON)
             self.creds = Credentials.from_service_account_info(
                 service_account_info, scopes=self.SCOPES
             )
