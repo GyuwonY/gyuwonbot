@@ -26,4 +26,4 @@ EXPOSE ${PORT}
 
 # Cloud Run은 PORT 환경 변수로 포트를 전달합니다 (기본값 8080).
 # uvicorn이 0.0.0.0으로 실행되어야 Cloud Run 환경에서 요청을 받을 수 있습니다.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT}"]
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "$PORT"]
