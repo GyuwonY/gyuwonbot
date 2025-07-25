@@ -11,6 +11,7 @@ class GoogleCalendarService:
     SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
     def __init__(self):
+        self.calendar_id = settings.CALENDAL_ID
         try:
             with open(settings.GOOGLE_SERVICE_ACCOUNT_JSON, "r") as f:
                 service_account_info = json.load(f)
@@ -31,7 +32,7 @@ class GoogleCalendarService:
             events_result = await asyncio.to_thread(
                 self.service.events()
                 .list(
-                    calendarId=settings.CALENDAL_ID,
+                    calendarId=self.calendar_id,
                     timeMin=f"{start_date}T00:00:00Z",
                     maxResults=max_results,
                     singleEvents=True,
@@ -50,7 +51,7 @@ class GoogleCalendarService:
             event = await asyncio.to_thread(
                 self.service.events()
                 .insert(
-                    calendarId=settings.CALENDAL_ID,
+                    calendarId=self.calendar_id,
                     body=event_body,
                     fields=fields_to_include,
                 )
