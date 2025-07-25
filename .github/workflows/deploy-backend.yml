@@ -36,9 +36,9 @@ jobs:
           image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${SERVICE_NAME}:${{ github.sha }}
           region: ${{ env.REGION }}
           secrets: |
-            DATABASE_URL:/secrets/projects/${{ env.PROJECT_ID }}/secrets/DATABASE_URL
-            CALENDAR_ID=/secrets/projects/${{ env.PROJECT_ID }}/secrets/CALENDAR_ID
-            DISCORD_WEBHOOK_URL=/secrets/projects/${{ env.PROJECT_ID }}/secrets/DISCORD_WEBHOOK_URL
-            GEMINI_API_KEY=/secrets/projects/${{ env.PROJECT_ID }}/secrets/GEMINI_API_KEY
-            GOOGLE_SERVICE_ACCOUNT_JSON=/secrets/projects/${{ env.PROJECT_ID }}/secrets/GOOGLE_SERVICE_ACCOUNT_JSON
+            DATABASE_URL:/secrets/projects/${{ env.PROJECT_ID }}/secrets/DATABASE_URL:latest
+            CALENDAR_ID=/secrets/projects/${{ env.PROJECT_ID }}/secrets/CALENDAR_ID:latest
+            DISCORD_WEBHOOK_URL=/secrets/projects/${{ env.PROJECT_ID }}/secrets/DISCORD_WEBHOOK_URL:latest
+            GEMINI_API_KEY=/secrets/projects/${{ env.PROJECT_ID }}/secrets/GEMINI_API_KEY:latest
+            GOOGLE_SERVICE_ACCOUNT_JSON=/secrets/projects/${{ env.PROJECT_ID }}/secrets/GOOGLE_SERVICE_ACCOUNT_JSON:latest
             
