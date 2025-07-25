@@ -69,6 +69,5 @@ class KnowledgeBase(Base):
         return {
             "source_type": self.source_type.value,
             "topic": self.topic,
-            "question": self.question,
             "content": self.content,
         }
