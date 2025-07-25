@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     DISCORD_WEBHOOK_URL: str
     GEMINI_API_KEY: str
     GOOGLE_SERVICE_ACCOUNT_JSON: str
-    CALENDAL_ID: str
+    CALENDAR_ID: str
 
     model_config = SettingsConfigDict(
         env_file=".env" if os.getenv("APP_ENV") == "local" else None,

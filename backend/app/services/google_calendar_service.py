@@ -11,7 +11,7 @@ class GoogleCalendarService:
     SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
     def __init__(self):
-        self.calendar_id = settings.CALENDAL_ID
+        self.calendar_id = settings.CALENDAR_ID
         try:
             with open(settings.GOOGLE_SERVICE_ACCOUNT_JSON, "r") as f:
                 service_account_info = json.load(f)
