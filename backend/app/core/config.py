@@ -1,4 +1,5 @@
-from pydantic_settings import BaseSettings
+import os
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import ValidationError
 
 
@@ -7,11 +8,12 @@ class Settings(BaseSettings):
     DISCORD_WEBHOOK_URL: str
     GEMINI_API_KEY: str
     GOOGLE_SERVICE_ACCOUNT_JSON: str
-    CALENDAL_ID: str
+    CALENDAR_ID: str
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        env_file=".env" if os.getenv("APP_ENV") == "local" else None,
+        env_file_encoding="utf-8"
+    )
 
 
 try:

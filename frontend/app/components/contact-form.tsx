@@ -18,7 +18,7 @@ export default function ContactForm() {
     const a = process.env.NEXT_PUBLIC_GYUWONBOT_API_URL
     console.log(a)
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_GYUWONBOT_API_URL+'/notification' || '', {
+      const response = await fetch(process.env.NEXT_PUBLIC_GYUWONBOT_API_URL + '/notification/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ export default function ContactForm() {
       if (!response.ok) {
         throw new Error('서버 오류');
       }
-      
+
       setMessage("남겨주신 연락처로 연락 드리겠습니다. 감사합니다.");
     } catch (error) {
       setMessage("다시 시도해주시기 바랍니다.");

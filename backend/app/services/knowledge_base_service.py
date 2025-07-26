@@ -21,12 +21,13 @@ class KnowledgeBaseService:
     def __init__(self, db_session: AsyncSession):
         self.db_session = db_session
         self.embeddings_model: GoogleGenerativeAIEmbeddings | None = None
+        self.gemini_api_key = settings.GEMINI_API_KEY
 
     async def _get_or_create_embeddings_model(self) -> GoogleGenerativeAIEmbeddings:
         if self.embeddings_model is None:
             self.embeddings_model = GoogleGenerativeAIEmbeddings(
                 model="gemini-embedding-001",
-                google_api_key=settings.GEMINI_API_KEY,
+                google_api_key=self.gemini_api_key,
             )
         return self.embeddings_model
 
