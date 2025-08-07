@@ -7,7 +7,7 @@ const technologies = [
   },
   {
     category: "AI",
-    skills: ["Langchain", "Pytorch"],
+    skills: ["Langchain"],
   },
   {
     category: "DevOps",
@@ -15,7 +15,7 @@ const technologies = [
   },
   {
     category: "Tools",
-    skills: ["Git", "Notion", "GitHub"],
+    skills: ["Git", "Notion", "GitHub", "Gemini-cli"],
   },
 ]
 
