@@ -13,7 +13,7 @@ def get_knowledge_base_service(
     return KnowledgeBaseService(db_session=db)
 
 
-@router.post("/upload-files/")
+@router.post("/upload-files")
 async def create_upload_files(
     files: List[UploadFile] = File(...),
     kb_service: KnowledgeBaseService = Depends(get_knowledge_base_service),

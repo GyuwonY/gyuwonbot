@@ -34,7 +34,7 @@ def get_notification_service() -> NotificationService:
     return NotificationService()
 
 
-@router.post("/", response_model=ChatResponse)
+@router.post("", response_model=ChatResponse)
 async def chat_with_bot(
     fastapi_request: Request,
     chat_request: ChatRequest,

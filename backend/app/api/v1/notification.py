@@ -6,7 +6,7 @@ from app.services.notification_service import NotificationService
 router = APIRouter()
 
 
-@router.post("/", response_model=dict)
+@router.post("", response_model=dict)
 async def send_notification(
     notification: Notification,
     notification_service: NotificationService = Depends(),
