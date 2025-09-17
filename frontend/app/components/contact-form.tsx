@@ -18,7 +18,7 @@ export default function ContactForm() {
     const a = process.env.NEXT_PUBLIC_GYUWONBOT_API_URL
     console.log(a)
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_GYUWONBOT_API_URL + '/notification/', {
+      const response = await fetch(process.env.NEXT_PUBLIC_GYUWONBOT_API_URL + '/notification', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

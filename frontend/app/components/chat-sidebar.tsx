@@ -54,7 +54,7 @@ export default function ChatSidebar() {
     // 실제 봇 API 호출
     const fetchBotResponse = async () => {
       try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_GYUWONBOT_API_URL}/chat/`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_GYUWONBOT_API_URL}/chat`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
