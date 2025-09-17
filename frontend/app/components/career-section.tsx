@@ -20,8 +20,8 @@ const careerData = [
         description: "환경 개선을 위한 Migration",
       },
       {
-        title: "서비스 기능 개발",
-        description: "비지니스에 필요한 기능 개발",
+        title: "서비스 개발",
+        description: "비즈니스 요구에 따른 서비스 개발",
       },
     ],
   },

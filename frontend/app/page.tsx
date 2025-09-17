@@ -85,7 +85,21 @@ export default function Page() {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-12 text-center">
                 Projects
               </h2>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
+                <ProjectCard
+                  title="lio"
+                  description="인터랙티브 포트폴리오 페이지 제공 서비스"
+                  image="/lio.png?height=400&width=600"
+                  link="https://github.com/GyuwonY/gyuwonbot"
+                  tags={["FastAPI", "PostgreSQL", "PGVector", "Redis", "LangChain", "LangGraph", "LangSmith", "GeminiAPI", "GCP"]}
+                />
+                <ProjectCard
+                  title="암호화폐 가격 변동률 예측 모델"
+                  description="LLM 에이전트 기반 인터랙티브 포트폴리오"
+                  image="/placeholder.svg?height=400&width=600"
+                  link="https://github.com/GyuwonY/deeplearning-pj-coin"
+                  tags={["FastAPI", "PostgreSQL", "Langchain", "GeminiAPI", "GCP"]}
+                />
                 <ProjectCard
                   title="Gyuwon-Bot"
                   description="LLM 에이전트 기반 인터랙티브 포트폴리오"
