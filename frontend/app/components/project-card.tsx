@@ -2,16 +2,20 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Github } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 interface ProjectCardProps {
   title: string
   description: string
+  content: string
   image: string
   link: string
   tags: string[]
 }
 
-export default function ProjectCard({ title, description, image, link, tags }: ProjectCardProps) {
+export default function ProjectCard({ title, description, content, image, link, tags }: ProjectCardProps) {
   return (
     <Card className="overflow-hidden">
       <div className="relative aspect-video">
@@ -34,6 +38,9 @@ export default function ProjectCard({ title, description, image, link, tags }: P
               {tag}
             </span>
           ))}
+        </div>
+        <div className="prose dark:prose-invert max-w-none text-m mb-4">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>{content}</ReactMarkdown>
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
